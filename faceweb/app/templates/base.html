@@ -1,0 +1,19 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - TFP</title>
+      {% else %}
+      <title>Welcome to Tracking for pleasure</title>
+      {% endif %}
+      <link rel="stylesheet" href="../static/bootstrap.min.css">
+      <link rel="stylesheet" href="../static/six.css">
+    </head>
+    <body>
+        <div>:
+            <p align="right"><a href="/index">Home</a>
+            <a href="/login">Login</a></p></div>
+            <h2 class="funny-title section-title">TrackingForPleasure</h2>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>

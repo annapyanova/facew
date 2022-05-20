@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Здравствуйте, {{ user.username }}!</h1>
+    {% for post in posts %}
+	<div><p>{{ post.author.username }} : <b>{{ post.body }}</b></p></div>
+	<body>
+        <video autoplay src="http://localhost:8821" width="1080" height="576" controls="controls"> </video>
+	</body>
+    {% endfor %}
+{% endblock %}

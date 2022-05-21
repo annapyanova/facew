@@ -22,7 +22,7 @@
       ![image](https://user-images.githubusercontent.com/90253693/169554977-64720270-91ad-4fb0-b09e-d868002e7537.jpg)
 
 9) Для запуска тестов выполните команду `python3 -m pytest`, после чего будет получено
-сообщение об успешном выполнении 5 тестов.
+сообщение об успешном прохождении 5 тестов.
 
    ![image](https://user-images.githubusercontent.com/90253693/169556039-c2d1096f-35e1-461f-af7f-e08204086f7c.png)
  

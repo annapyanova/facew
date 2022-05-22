@@ -4,7 +4,7 @@
 ### Для запуска обязательно наличие дистрибутива Ubuntu (wsl2) и таких пакетов, как  python3, ffmpeg, docker, docker-compose, tensorflow, numpy, cmake, cv2, psycopg2, flask, gstreamer, pytest.
 ---
 Инструкция для запуска:
-1) Произведите клонирование данного репозитория на локальный компьтер.
+1) Произведите клонирование данного репозитория на локальный компьтер (`git clone https://github.com/annapyanova/facew.git`).
 2) Откройте терминал **wsl2** и перейдите в дирректорию **facew**.
 
       ![image](https://user-images.githubusercontent.com/90253693/169549078-1f5e1a8e-0c8d-48a7-bdc9-a51ef7905052.jpg)

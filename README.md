@@ -1,7 +1,7 @@
 <h1><i>Требования и инструкция для запуска проекта.</i></h1>
 
 
-### Для запуска обязательно наличие дистрибутива Ubuntu (wsl2) и таких пакетов, как  python3, ffmpeg, docker, docker-compose, tensorflow, numpy, cmake, cv2, psycopg2, flask, gstreamer, pytest.
+### Для запуска обязательно наличие дистрибутива Ubuntu (wsl2) и пакетов, указанных в файле requirements.txt.
 ---
 Инструкция для запуска:
 1) Произведите клонирование данного репозитория на локальный компьтер (`git clone https://github.com/annapyanova/facew.git`).

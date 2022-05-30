@@ -1,0 +1,14 @@
+lxml
+cmake
+numpy
+tqdm
+absl-py
+matplotlib
+easydict
+pillow
+tensorflow
+psycopg2
+psycopg2-binary
+scipy
+ffmpeg
+opencv-python

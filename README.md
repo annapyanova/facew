@@ -7,7 +7,7 @@
 1) Произведите клонирование данного репозитория на локальный компьтер (`git clone https://github.com/annapyanova/facew.git`).
 2) Откройте терминал **wsl2** и перейдите в дирректорию **facew**.
   
-      ![image](https://user-images.githubusercontent.com/90253693/171024096-f9b28ea5-d35a-4097-bc07-0ecbab704192.png)
+      ![image](https://user-images.githubusercontent.com/90253693/169549078-1f5e1a8e-0c8d-48a7-bdc9-a51ef7905052.jpg)
 
 3) Выполните команду `sudo docker-compose build` для сборки проекта.
 4) После завершения сборки выполните `sudo docker-compose up` для поднятия докер-контейнеров.

@@ -12,17 +12,20 @@ services:
         restart: always
         volumes: 
             - database-data:/var/lib/postgresql/data/
+        networks:
+            - facenet
 
     pgadmin:
         image: dpage/pgadmin4
-        environment: 
+        environment:
             - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
             - PGADMIN_DEFAULT_PASSWORD=admin1234
         ports:
             - '5050:80'
         restart: always
-        volumes: 
+        volumes:
             - pgadmin:/root/.pgadmin
+
     front:
         build: ./faceweb
         container_name: front
@@ -31,15 +34,23 @@ services:
         ports:
            - "5000:5000"
         command: python3 -m flask run --host 0.0.0.0
+
     back:
         build: ./server
         container_name: back
         volumes:
             - ./server:/server
-        ports:
-           - "1234:1234"
-        command: python3 server.py --host 127.0.0.1
+        command: python3 server.py
+        depends_on:
+            - postgresql_database
+            - front
+        networks:
+            - facenet
+
 volumes:
     database-data:
     pgadmin:
+
+networks:
+    facenet:
     

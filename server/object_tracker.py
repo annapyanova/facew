@@ -39,7 +39,7 @@ INFO=True
 COUNT=False
 
 import psycopg2
-conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='postgresql_database')
+conn = psycopg2.connect(dbname='postgres', user='postgres', password='admin1234', host='postgresql_database')
 cursor = conn.cursor()
 
 def main():

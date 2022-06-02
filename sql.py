@@ -1,6 +1,6 @@
 import psycopg2
 
-conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='postgresql_database')
+conn = psycopg2.connect(dbname='postgres', user='postgres', password='admin1234', host='localhost')
 cursor = conn.cursor()
 
 create_table_query = """
@@ -19,3 +19,4 @@ print("Таблица успешно создана в PostgreSQL")
 
 #cursor.execute("SELECT * FROM facew")
 #print(cursor.fetchall())
+

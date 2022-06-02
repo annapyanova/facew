@@ -2,35 +2,40 @@ version: '3.4'
 
 services:
     postgresql_database:
+        container_name: postgresql
         image: postgres:latest
         environment:
-            - POSTGRES_USER=admin
-            - POSTGRES_PASSWORD=admin1234
-            - POSTGRES_DB=productDb
-        ports: 
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: admin1234
+            PGDATA: /data/postgres
+        ports:
             - "5432:5432"
-        restart: always
-        volumes: 
+        restart: unless-stopped
+        volumes:
             - database-data:/var/lib/postgresql/data/
         networks:
+            - postgres
             - facenet
 
     pgadmin:
+        container_name: pgadmin
         image: dpage/pgadmin4
         environment:
-            - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
-            - PGADMIN_DEFAULT_PASSWORD=admin1234
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+            PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+            PGADMIN_DEFAULT_PASSWORD: admin1234
         ports:
             - '5050:80'
-        restart: always
+        restart: unless-stopped
+        networks:
+            - postgres
+            - facenet
         volumes:
-            - pgadmin:/root/.pgadmin
+            - pgadmin:/var/lib/pgadmin
 
     front:
         build: ./faceweb
         container_name: front
-        volumes:
-            - ./faceweb:/faceweb
         ports:
            - "5000:5000"
         command: python3 -m flask run --host 0.0.0.0
@@ -39,7 +44,7 @@ services:
         build: ./server
         container_name: back
         ports:
-            - "8821:8821"
+            - 8821:8821
         command: python3 server.py
         depends_on:
             - postgresql_database
@@ -47,13 +52,11 @@ services:
             - pgadmin
         networks:
             - facenet
-        volumes:
-            - back:/server/data/video
 
 volumes:
     database-data:
     pgadmin:
-    back:
 
 networks:
+    postgres:
     facenet:

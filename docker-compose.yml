@@ -40,6 +40,7 @@ services:
         container_name: back
         ports:
             - "8821:8821"
+        command: python3 server.py
         depends_on:
             - postgresql_database
             - front

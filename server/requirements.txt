@@ -7,10 +7,6 @@ matplotlib
 easydict
 pillow
 tensorflow
-tensorflow-gpu
 psycopg2-binary
 scipy
 ffmpeg
-opencv-python
-opencv-utils
-

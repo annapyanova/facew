@@ -1,6 +1,6 @@
 import psycopg2
 
-conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='localhost')
+conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='postgresql_database')
 cursor = conn.cursor()
 
 create_table_query = """

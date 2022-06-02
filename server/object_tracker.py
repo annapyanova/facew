@@ -39,25 +39,10 @@ INFO=True
 COUNT=False
 
 import psycopg2
-conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='localhost')
+conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='postgresql_database')
 cursor = conn.cursor()
 
-def set_flags():
-    flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
-    flags.DEFINE_string('weights', './checkpoints/yolov4-416', 'path to weights file')
-    flags.DEFINE_integer('size', 416, 'resize images to')
-    flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
-    flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-    flags.DEFINE_string('video', './data/video/face.mp4', 'path to input video or set to 0 for webcam')
-    flags.DEFINE_string('output', './outputs/track1.avi', 'path to output video')
-    flags.DEFINE_string('output_format', 'XVID', 'codec used in VideoWriter when saving video to file')
-    flags.DEFINE_float('iou', 0.45, 'iou threshold')
-    flags.DEFINE_float('score', 0.50, 'score threshold')
-    flags.DEFINE_boolean('dont_show', False, 'dont show video output')
-    flags.DEFINE_boolean('info', True, 'show detailed info of tracked objects')
-    flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
-
-def main(_argv):
+def main():
     # Definition of the parameters
     max_cosine_distance = 0.4
     nn_budget = None
@@ -75,33 +60,24 @@ def main(_argv):
     config = ConfigProto()
     config.gpu_options.allow_growth = True
     session = InteractiveSession(config=config)
-    STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
+    #STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
     input_size = SIZE
     video_path = VIDEO
     saved_model_loaded = tf.saved_model.load(WEIGHTS, tags=[tag_constants.SERVING])
     infer = saved_model_loaded.signatures['serving_default']
 
-    pipe_out = 'appsrc ! videoconvert ! x264enc tune=zerolatency bitrate=700 speed-preset=superfast ! decodebin ! autovideoconvert ! theoraenc ! oggmux ! tcpserversink host=127.0.0.1 port=8821'
+    pipe_out = 'appsrc ! videoconvert ! x264enc tune=zerolatency bitrate=700 speed-preset=superfast ! decodebin ! autovideoconvert ! theoraenc ! oggmux ! tcpserversink host=0.0.0.0 port=8821'
 
     try:
-        vid = cv2.VideoCapture("filesrc location=/home/annapyanova/dev/facew/server/data/video/face.mp4 ! decodebin ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
+        vid = cv2.VideoCapture("filesrc location=/server/data/video/face.mp4 ! decodebin ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
     except Exception as e:
         print(e)
 
     out = cv2.VideoWriter(pipe_out, 0, 30, (int(vid.get(cv2.CAP_PROP_FRAME_WIDTH)), int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
-    #while True:   
+    #while True:
     #    return_value, frame = vid.read()
     #    out.write(frame)
     #    print(1)
-
-    # get video ready to save locally if flag is set
-    if OUTPUT:
-        # by default VideoCapture returns float instead of int
-        width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fps = int(vid.get(cv2.CAP_PROP_FPS))
-        codec = cv2.VideoWriter_fourcc(*OUTPUT_FORMAT)
-        out = cv2.VideoWriter(OUTPUT, codec, fps, (width, height))
 
     frame_num = 0
     # while video is running
@@ -111,8 +87,7 @@ def main(_argv):
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             original_dimensions = (frame.shape[1], frame.shape[0])
             frame = cv2.resize(src=frame, dsize=(int(original_dimensions[0] * 0.4), int(original_dimensions[1] * 0.4)), interpolation=cv2.INTER_AREA)
-            frame = cv2.resize(src=frame,
-            dsize=original_dimensions, interpolation=cv2.INTER_AREA)
+            frame = cv2.resize(src=frame, dsize=original_dimensions, interpolation=cv2.INTER_AREA)
             image = Image.fromarray(frame)
         else:
             print('Video has ended or failed, try a different video format!')
@@ -137,8 +112,8 @@ def main(_argv):
                 pred_conf, (tf.shape(pred_conf)[0], -1, tf.shape(pred_conf)[-1])),
             max_output_size_per_class=50,
             max_total_size=50,
-            iou_threshold=FLAGS.iou,
-            score_threshold=FLAGS.score
+            iou_threshold=IOU,
+            score_threshold=SCORE
         )
 
         # convert data to numpy arrays and slice out unused elements
@@ -150,7 +125,7 @@ def main(_argv):
         classes = classes.numpy()[0]
         classes = classes[0:int(num_objects)]
 
-        # format bounding boxes from normalized ymin, xmin, ymax, xmax —-> xmin, ymin, width, height
+        # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, width, height
         original_h, original_w, _ = frame.shape
         bboxes = utils.format_boxes(bboxes, original_h, original_w)
 
@@ -207,7 +182,7 @@ def main(_argv):
         # update tracks
         for track in tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 1:
-                continue 
+                continue
             bbox = track.to_tlbr()
             class_name = track.get_class()
 

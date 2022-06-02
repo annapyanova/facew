@@ -1,6 +1,3 @@
-from absl import app
 import object_tracker
 
-object_tracker.set_flags()
-
-app.run(object_tracker.main)
+object_tracker.main()

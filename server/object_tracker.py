@@ -30,7 +30,7 @@ SIZE = 416
 TINY = False
 MODEL = 'yolov4'
 VIDEO = './data/video/face.mp4'
-OUTPUT = './outputs/face_tracked.avi'
+OUTPUT = './outputs/track1.avi'
 OUTPUT_FORMAT='XVID'
 IOU=0.45
 SCORE=0.5
@@ -39,9 +39,8 @@ INFO=True
 COUNT=False
 
 import psycopg2
-conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='postgresql_database')
+conn = psycopg2.connect(dbname='productDb', user='admin', password='admin1234', host='localhost')
 cursor = conn.cursor()
-
 
 def set_flags():
     flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
@@ -50,7 +49,7 @@ def set_flags():
     flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
     flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
     flags.DEFINE_string('video', './data/video/face.mp4', 'path to input video or set to 0 for webcam')
-    flags.DEFINE_string('output', './outputs/face_tracked.avi', 'path to output video')
+    flags.DEFINE_string('output', './outputs/track1.avi', 'path to output video')
     flags.DEFINE_string('output_format', 'XVID', 'codec used in VideoWriter when saving video to file')
     flags.DEFINE_float('iou', 0.45, 'iou threshold')
     flags.DEFINE_float('score', 0.50, 'score threshold')

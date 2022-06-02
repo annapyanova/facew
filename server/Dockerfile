@@ -9,7 +9,9 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
 RUN update-alternatives --set python /usr/bin/python3.6
 RUN apt install python3-pip -y
 RUN apt-get install python3-distutils
+RUN python3 -m pip install --upgrade pip
 RUN apt-get install --assume-yes git libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev cmake
+RUN pip install ffmpeg
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBIAN_FRONTEND teletype
 RUN yes | apt-get install ubuntu-restricted-extras
@@ -38,11 +40,13 @@ RUN ldconfig
 WORKDIR /server
 COPY . /server
 RUN python3 save_model.py --model yolov4
-RUN pip install fastapi uvicorn scipy
+RUN pip install scipy
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 RUN yes | apt-get install libgstreamer1.0-0 gstreamer1.0-dev gstreamer1.0-tools gstreamer1.0-doc
 RUN yes | apt-get install gstreamer1.0-plugins-base gstreamer1.0-plugins-good
 RUN yes | apt-get install gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly
 RUN yes | apt-get install gstreamer1.0-libav
+RUN apt-get update
 RUN yes | apt-get install gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+CMD ["python3", "server.py"]

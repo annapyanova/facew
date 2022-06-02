@@ -38,19 +38,21 @@ services:
     back:
         build: ./server
         container_name: back
-        volumes:
-            - ./server:/server
-        command: python3 server.py
+        ports:
+            - "8821:8821"
         depends_on:
             - postgresql_database
             - front
+            - pgadmin
         networks:
             - facenet
+        volumes:
+            - back:/server/data/video
 
 volumes:
     database-data:
     pgadmin:
+    back:
 
 networks:
     facenet:
-    
